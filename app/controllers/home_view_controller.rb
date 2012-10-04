@@ -1,7 +1,33 @@
 class HomeViewController < UIViewController
   def viewDidLoad
     super
-    # Do any additional setup after loading the view.
+
+    scroll_frame = view.frame
+    scroll = UIScrollView.alloc.initWithFrame scroll_frame
+    scroll.pagingEnabled = true
+    scroll.contentSize = CGSizeMake scroll_frame.width * 3, scroll_frame.height
+
+    3.times do |i|
+      subframe = scroll_frame.right(scroll_frame.width * i)
+      subview = UIView.alloc.initWithFrame subframe
+
+      subview.backgroundColor = [rand * 255, rand * 255, rand * 255].uicolor
+      scroll << subview
+
+      header_frame = subview.bounds.right(90).down(60).width(150).height(20)
+      header_label = UILabel.alloc.initWithFrame header_frame
+
+      header_label.text = "This is page #{i + 1}"
+      header_label.backgroundColor = :clear.uicolor
+      subview << header_label
+
+      sublabel = UILabel.alloc.initWithFrame(header_frame.below(100).width(200).centered_in(subframe))
+      sublabel.text = "lorem ipsum dolor amet..."
+      sublabel.backgroundColor = :clear.uicolor
+      subview << sublabel
+    end
+
+    view << scroll
   end
 
   def viewDidUnload
